@@ -3,7 +3,8 @@ MAINTAINER Bart Teeuwisse <bart@thecodemill.biz>
 
 # Install emacs with ack and git
 RUN apt-get update
-RUN apt-get install -y ack-grep emacs24-nox git
+RUN apt-get upgrade -y
+RUN apt-get install -y ack-grep emacs24-nox git tcpdump yajl-tools
 
 # Install my emacs packages and .emacs file.
 ADD .emacs-install-packages.el /tmp/
