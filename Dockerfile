@@ -1,22 +1,19 @@
-FROM phusion/baseimage:latest
+FROM alpine:latest
+
 MAINTAINER Bart Teeuwisse <bart@thecodemill.biz>
 
 # Install emacs with ack and git
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get install -y ack-grep emacs24-nox git tcpdump telnet yajl-tools
+RUN apk update
+RUN apk add ca-certificates ack git tcpdump yajl-tools emacs-nox
 
 # Install my emacs packages and .emacs file.
-ADD .emacs-install-packages.el /tmp/
+COPY .emacs-install-packages.el /tmp/
 RUN emacs --batch --script /tmp/.emacs-install-packages.el
 RUN rm /tmp/.emacs-install-packages.el
-ADD .emacs /root/
+COPY .emacs /root/
 
 # Make bash the default shell.
 ENV SHELL /bin/bash
-
-# Disable the ssh server
-RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
 
 VOLUME ["/source", "/data"]
 
